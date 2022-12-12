@@ -6,24 +6,41 @@
 //
 
 import SwiftUI
+import Amplify
+import AWSAPIPlugin
+import AWSCognitoAuthPlugin
 import Foundation
 import Combine
-import Amplify
 
 struct ContentView: View {
 //    var sark: SARK = SARK()
-    
+    @State private var sink: AnyCancellable?
     var body: some View {
         VStack {
             Image(systemName: "globe")
                 .imageScale(.large)
                 .foregroundColor(.accentColor)
             Text("Hello, world!")
+            Button(action: {
+                        sink = postTodo()
+                        }) {
+                            Text("Run Function ToDo")
+                        }
         }
         .padding()
         .onAppear {
-            postTodo()
         }
+    }
+    init() {
+        do {
+            try Amplify.add(plugin: AWSCognitoAuthPlugin())
+            try Amplify.add(plugin: AWSAPIPlugin())
+            try Amplify.configure()
+            print("Amplify configured with API and Auth plugin")
+        } catch {
+            print("Failed to initialize Amplify with \(error)")
+        }
+
     }
     func postTodo() -> AnyCancellable {
         print("Running ToDo function")

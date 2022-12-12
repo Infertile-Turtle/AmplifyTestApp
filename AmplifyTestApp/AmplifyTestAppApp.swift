@@ -12,8 +12,6 @@ import AWSCognitoAuthPlugin
 import Foundation
 import Combine
 
-
-
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(
         _ application: UIApplication,
@@ -40,19 +38,7 @@ struct AmplifyTestAppApp: App {
         WindowGroup {
             ContentView()
         }
-    }
-    init() {
-        do {
-            try Amplify.add(plugin: AWSCognitoAuthPlugin())
-            try Amplify.add(plugin: AWSAPIPlugin())
-            try Amplify.configure()
-            print("Amplify configured with API and Auth plugin")
-        } catch {
-            print("Failed to initialize Amplify with \(error)")
-        }
-
-    }
-    
+    }    
 }
 
 
