@@ -8,6 +8,10 @@
 import SwiftUI
 import Amplify
 import AWSAPIPlugin
+import AWSCognitoAuthPlugin
+import Foundation
+import Combine
+
 
 
 class AppDelegate: NSObject, UIApplicationDelegate {
@@ -30,11 +34,26 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
 
 @main
+
 struct AmplifyTestAppApp: App {
-    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     var body: some Scene {
         WindowGroup {
             ContentView()
         }
     }
+    init() {
+        do {
+            try Amplify.add(plugin: AWSCognitoAuthPlugin())
+            try Amplify.add(plugin: AWSAPIPlugin())
+            try Amplify.configure()
+            print("Amplify configured with API and Auth plugin")
+        } catch {
+            print("Failed to initialize Amplify with \(error)")
+        }
+
+    }
+    
 }
+
+
+
