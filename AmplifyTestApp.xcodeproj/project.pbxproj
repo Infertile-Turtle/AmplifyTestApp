@@ -56,6 +56,7 @@
 		FF1E1B4C293FE5A900D2AE5D /* AmplifyTestAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmplifyTestAppUITests.swift; sourceTree = "<group>"; };
 		FF1E1B4E293FE5A900D2AE5D /* AmplifyTestAppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmplifyTestAppUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		FF30F827293FF03E0076B5EF /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
+		FF889BA52948FC8B0048906C /* AmplifyTestApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AmplifyTestApp.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +123,7 @@
 		FF1E1B30293FE5A800D2AE5D /* AmplifyTestApp */ = {
 			isa = PBXGroup;
 			children = (
+				FF889BA52948FC8B0048906C /* AmplifyTestApp.entitlements */,
 				FF1E1B31293FE5A800D2AE5D /* AmplifyTestAppApp.swift */,
 				FF1E1B33293FE5A800D2AE5D /* ContentView.swift */,
 				FF1E1B35293FE5A900D2AE5D /* Assets.xcassets */,
@@ -457,6 +459,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = AmplifyTestApp/AmplifyTestApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"AmplifyTestApp/Preview Content\"";
@@ -485,6 +488,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = AmplifyTestApp/AmplifyTestApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"AmplifyTestApp/Preview Content\"";

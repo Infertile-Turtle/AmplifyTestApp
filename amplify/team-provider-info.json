@@ -19,11 +19,11 @@
           "s3Key": "amplify-builds/restTodo123-6a457937463330447955-build.zip"
         }
       },
-      "auth": {
-        "amplifytestapp": {}
-      },
       "api": {
         "api1f12345": {}
+      },
+      "auth": {
+        "amplifytestapp1a933c73": {}
       }
     }
   }

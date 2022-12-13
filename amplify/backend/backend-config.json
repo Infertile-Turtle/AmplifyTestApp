@@ -7,11 +7,11 @@
     }
   },
   "auth": {
-    "amplifytestapp": {
+    "amplifytestapp1a933c73": {
       "service": "Cognito",
-      "serviceType": "managed",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
+      "customAuth": false,
       "frontendAuthConfig": {
         "socialProviders": [],
         "usernameAttributes": [],

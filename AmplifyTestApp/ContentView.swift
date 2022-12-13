@@ -13,7 +13,7 @@ import Foundation
 import Combine
 
 struct ContentView: View {
-//    var sark: SARK = SARK()
+    //    var sark: SARK = SARK()
     @State private var sink: AnyCancellable?
     var body: some View {
         VStack {
@@ -22,10 +22,27 @@ struct ContentView: View {
                 .foregroundColor(.accentColor)
             Text("Hello, world!")
             Button(action: {
-                        sink = postTodo()
-                        }) {
-                            Text("Run Function ToDo")
-                        }
+                sink = postTodo()
+            }) {
+                Text("Run API POST Check")
+            }
+            Button(action: {
+//                print("Testing")
+                sink = fetchCurrentAuthSession()
+            }) {
+                Text("Run Auth Check")
+            }
+            Button(action: {
+//                print("Testing")
+                sink = signUp(username: "adf020", password: "adf020", email: "andrew.d.fairchild@gmail.com")
+            }) {
+                Text("Run Auth Check")
+            }
+            Button(action: {
+                for _ in 0..<100 {print("")}
+            }) {
+                Text("Clear Console")
+            }
         }
         .padding()
         .onAppear {
@@ -40,8 +57,17 @@ struct ContentView: View {
         } catch {
             print("Failed to initialize Amplify with \(error)")
         }
-
+        
+//        do {
+//            try Amplify.add(plugin: AWSCognitoAuthPlugin())
+//            try Amplify.configure()
+//            print("Amplify configured with auth plugin")
+//        } catch {
+//            print("Failed to initialize Amplify with \(error)")
+//        }
+        
     }
+    
     func postTodo() -> AnyCancellable {
         print("Running ToDo function")
         let message = #"{"message": "my new Todo"}"#
@@ -49,16 +75,53 @@ struct ContentView: View {
         let sink = Amplify.Publisher.create {
             try await Amplify.API.post(request: request)
         }
-        .sink {
-            if case let .failure(apiError) = $0 {
-                print("Failed", apiError)
+            .sink {
+                if case let .failure(apiError) = $0 {
+                    print("Failed", apiError)
+                }
+            }
+    receiveValue: { data in
+        let str = String(decoding: data, as: UTF8.self)
+        print("Success \(str)")
+    }
+        return sink
+    }
+    
+    func fetchCurrentAuthSession() -> AnyCancellable {
+        Amplify.Publisher.create {
+                try await Amplify.Auth.fetchAuthSession()
+            }.sink {
+                if case let .failure(authError) = $0 {
+                    print("Fetch session failed with error \(authError)")
+                }
+            }
+            receiveValue: { session in
+                print("Is user signed in - \(session.isSignedIn)")
+            }
+    }
+    
+    func signUp(username: String, password: String, email: String) -> AnyCancellable {
+        let userAttributes = [AuthUserAttribute(.email, value: email)]
+        let options = AuthSignUpRequest.Options(userAttributes: userAttributes)
+        let sink = Amplify.Publisher.create {
+            try await Amplify.Auth.signUp(
+                username: username,
+                password: password,
+                options: options
+            )
+        }.sink {
+            if case let .failure(authError) = $0 {
+                print("An error occurred while registering a user \(authError)")
             }
         }
-        receiveValue: { data in
-            let str = String(decoding: data, as: UTF8.self)
-            print("Success \(str)")
+        receiveValue: { signUpResult in
+            if case let .confirmUser(deliveryDetails, _, userId) = signUpResult.nextStep {
+                print("Delivery details \(String(describing: deliveryDetails)) for userId: \(String(describing: userId)))")
+            } else {
+                print("SignUp Complete")
+            }
+
         }
-        print("Sink \(sink)")
         return sink
     }
 }
