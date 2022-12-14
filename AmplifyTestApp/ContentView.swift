@@ -15,38 +15,79 @@ import Combine
 struct ContentView: View {
     //    var sark: SARK = SARK()
     @State private var sink: AnyCancellable?
+//    @State private var usernames: String?
+//    @State private var passwords: String?
+//    @State private var emails: String?
+//    @State private var confirmationCode: String?
+    @State private var username: String = ""
+    @State private var password: String = ""
+    @State private var email: String = ""
+    @State private var verification: String = ""
+    @State private var confirmationCode: String = ""
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
-            Button(action: {
-                sink = postTodo()
-            }) {
-                Text("Run API POST Check")
+            
+            
+            Group {
+                
+                Image(systemName: "globe")
+                    .imageScale(.large)
+                    .foregroundColor(.accentColor)
+                Text("Hello, world!")
+                Button(action: {
+                    sink = postTodo()
+                }) {
+                    Text("Run API POST Check")
+                }
+                Button(action: {
+                    sink = fetchCurrentAuthSession()
+                }) {
+                    Text("Run Auth Check")
+                    
+                }
+                
+                Button(action: {
+                    for _ in 0..<100 {print("")}
+                }) {
+                    Text("Clear Console")
+                }
+            }
+           
+            Group {
+                
+                TextField("Username", text: $username) // <1>, <2>
+                TextField("Email", text: $email) // <1>, <2>
+                TextField("Password", text: $password) // <1>, <2>
+                TextField("Verification Code", text: $verification) // <1>, <2>
+                
+                Button(action: {
+                    sink = signUp(username: username, password: password, email: email)
+                }) {
+                    Text("Login")
+                }
+                
+                Button(action: {
+                    sink = confirmSignUp(for: username, with: verification)
+                }) {
+                    Text("Confirmation Code Check")
+                }
+                Button(action: {
+                    sink = signIn(username: username, password: password)
+                }) {
+                    Text("Sign In")
+                }
             }
             Button(action: {
-//                print("Testing")
-                sink = fetchCurrentAuthSession()
+                sink = signOutLocally()
             }) {
-                Text("Run Auth Check")
+                Text("Sign Out Locally")
             }
-            Button(action: {
-//                print("Testing")
-                sink = signUp(username: "adf020", password: "adf020", email: "andrew.d.fairchild@gmail.com")
-            }) {
-                Text("Run Auth Check")
-            }
-            Button(action: {
-                for _ in 0..<100 {print("")}
-            }) {
-                Text("Clear Console")
-            }
+            
+            
+            
         }
         .padding()
-        .onAppear {
-        }
+        .onAppear()
     }
     init() {
         do {
@@ -124,6 +165,96 @@ struct ContentView: View {
         }
         return sink
     }
+    
+    func confirmSignUp(for username: String, with confirmationCode: String) -> AnyCancellable {
+        Amplify.Publisher.create {
+            try await Amplify.Auth.confirmSignUp(
+                for: username,
+                confirmationCode: confirmationCode
+            )
+        }.sink {
+            if case let .failure(authError) = $0 {
+                print("An error occurred while confirming sign up \(authError)")
+            }
+        }
+        receiveValue: { _ in
+            print("Confirm signUp succeeded")
+        }
+    }
+    func signIn(username: String, password: String) -> AnyCancellable {
+        Amplify.Publisher.create {
+            try await Amplify.Auth.signIn(
+                username: username,
+                password: password
+                )
+        }.sink {
+            if case let .failure(authError) = $0 {
+                print("Sign in failed \(authError)")
+            }
+        }
+        receiveValue: { signInResult in
+            if signInResult.isSignedIn {
+                print("Sign in succeeded")
+            }
+        }
+    }
+    func signOutLocally() -> AnyCancellable {
+        Amplify.Publisher.create {
+            await Amplify.Auth.signOut()
+        }.sink(receiveValue: { result in
+            guard let signOutResult = result as? AWSCognitoSignOutResult
+            else {
+                print("Signout failed")
+                return
+            }
+            print("Local signout successful: \(signOutResult.signedOutLocally)")
+            switch signOutResult {
+            case .complete:
+                // Sign Out completed fully and without errors.
+                print("Signed out successfully")
+
+            case let .partial(revokeTokenError, globalSignOutError, hostedUIError):
+                // Sign Out completed with some errors. User is signed out of the device.
+                if let hostedUIError = hostedUIError {
+                    print("HostedUI error  \(String(describing: hostedUIError))")
+                }
+
+                if let globalSignOutError = globalSignOutError {
+                    // Optional: Use escape hatch to retry revocation of globalSignOutError.accessToken.
+                    print("GlobalSignOut error  \(String(describing: globalSignOutError))")
+                }
+
+                if let revokeTokenError = revokeTokenError {
+                    // Optional: Use escape hatch to retry revocation of revokeTokenError.accessToken.
+                    print("Revoke token error  \(String(describing: revokeTokenError))")
+                }
+
+            case .failed(let error):
+                // Sign Out failed with an exception, leaving the user signed in.
+                print("SignOut failed with \(error)")
+            }
+        })
+    }
+//    func signOutGlobally() -> AnyCancellable {
+//        Amplify.Publisher.create {
+//            await Amplify.Auth.signOut(options: .init(globalSignOut: true))
+//        }.sink(receiveValue: { result in
+//            guard let signOutResult = result as? AWSCognitoSignOutResult
+//            else {
+//                print("Signout failed")
+//                return
+//            }
+//            print("Local signout successful: \(signOutResult.signedOutLocally)")
+//            switch signOutResult {
+//            case .complete:
+//                // handle successful sign out
+//            case .failed(let error):
+//                // handle failed sign out
+//            case let .partial(revokeTokenError, globalSignOutError, hostedUIError):
+//                // handle partial sign out
+//            }
+//        })
+//    }
 }
 
 

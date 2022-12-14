@@ -23,6 +23,7 @@
 		FF30F824293FF0090076B5EF /* AWSS3StoragePlugin in Frameworks */ = {isa = PBXBuildFile; productRef = FF30F823293FF0090076B5EF /* AWSS3StoragePlugin */; };
 		FF30F826293FF0090076B5EF /* Amplify in Frameworks */ = {isa = PBXBuildFile; productRef = FF30F825293FF0090076B5EF /* Amplify */; };
 		FF30F828293FF03E0076B5EF /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF30F827293FF03E0076B5EF /* TestView.swift */; };
+		FF889BA7294911BB0048906C /* TextFieldTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF889BA6294911BB0048906C /* TextFieldTest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 		FF1E1B4E293FE5A900D2AE5D /* AmplifyTestAppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmplifyTestAppUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		FF30F827293FF03E0076B5EF /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		FF889BA52948FC8B0048906C /* AmplifyTestApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AmplifyTestApp.entitlements; sourceTree = "<group>"; };
+		FF889BA6294911BB0048906C /* TextFieldTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,6 +131,7 @@
 				FF1E1B35293FE5A900D2AE5D /* Assets.xcassets */,
 				FF1E1B37293FE5A900D2AE5D /* Preview Content */,
 				FF30F827293FF03E0076B5EF /* TestView.swift */,
+				FF889BA6294911BB0048906C /* TextFieldTest.swift */,
 			);
 			path = AmplifyTestApp;
 			sourceTree = "<group>";
@@ -304,6 +307,7 @@
 				FF30F828293FF03E0076B5EF /* TestView.swift in Sources */,
 				FF1E1B34293FE5A800D2AE5D /* ContentView.swift in Sources */,
 				FF1E1B32293FE5A800D2AE5D /* AmplifyTestAppApp.swift in Sources */,
+				FF889BA7294911BB0048906C /* TextFieldTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
