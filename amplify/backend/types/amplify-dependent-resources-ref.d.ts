@@ -8,14 +8,15 @@ export type AmplifyDependentResourcesAttributes = {
         }
     },
     "auth": {
-        "amplifytestapp1a933c73": {
+        "amplifytestappauth": {
             "IdentityPoolId": "string",
             "IdentityPoolName": "string",
             "UserPoolId": "string",
             "UserPoolArn": "string",
             "UserPoolName": "string",
             "AppClientIDWeb": "string",
-            "AppClientID": "string"
+            "AppClientID": "string",
+            "CreatedSNSRole": "string"
         }
     },
     "api": {
