@@ -24,6 +24,7 @@ struct ContentView: View {
     @State private var email: String = ""
     @State private var verification: String = ""
     @State private var phonenumber: String = ""
+    @State private var MFA: String = ""
     //    @State private var confirmationCode: String = ""
     var body: some View {
         VStack {
@@ -61,6 +62,7 @@ struct ContentView: View {
                 TextField("Password", text: $password) // <1>, <2>
                 TextField("Phone Number", text: $phonenumber) // <1>, <2>
                 TextField("Verification Code", text: $verification) // <1>, <2>
+                TextField("MFA Code", text: $MFA) // <1>, <2>
                 
                 Button(action: {
                     sink = signUp(username: username, password: password, email: email, phonenumber: phonenumber)
@@ -75,10 +77,16 @@ struct ContentView: View {
                 }
                 Button(action: {
                     sink = signIn(username: username, password: password)
-                    sink = confirmSignIn()
+//                    sink = confirmSignIn()
                 }) {
                     Text("Sign In")
                 }
+            }
+            Button(action: {
+                sink = signIn(username: username, password: password)
+                sink = confirmSignIn()
+            }) {
+                Text("Confirm Sign In")
             }
             Button(action: {
                 sink = signOutLocally()
