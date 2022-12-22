@@ -70,32 +70,52 @@ struct ContentView: View {
                     Text("Sign Up")
                 }
                 
+//                Button(action: {
+//                    sink = confirmSignUp(for: username, with: verification)
+//                }) {
+//                    Text("Confirm Sign Up")
+//                }
+//                Button(action: {
+//                    sink = signIn(username: username, password: password)
+//
+//                }) {
+//                    Text("Sign In Only")
+//                }
                 Button(action: {
                     sink = confirmSignUp(for: username, with: verification)
+                    sink = signIn(username: username, password: password)
+
                 }) {
-                    Text("Confirmation Code Check")
+                    Text("Confirm Sign Up and Sign In")
+                }
+               
+            }
+            Group {
+//                Button(action: {
+//                    sink = signUp(username: username, password: password, email: email, phonenumber: phonenumber)
+//                    sink = signIn(username: username, password: password)
+//                }) {
+//                    Text("Sign Up and Sign In")
+//                }
+//                Button(action: {
+//                    sink = signIn(username: username, password: password)
+//                    sink = confirmSignIn()
+//                }) {
+//                    Text("Sign In and Confirm Sign In")
+//                }
+                Button(action: {
+                    sink = confirmSignIn()
+                }) {
+                    Text("Confirm Sign In Only")
                 }
                 Button(action: {
-                    sink = signIn(username: username, password: password)
-//                    sink = confirmSignIn()
+                    sink = signOutLocally()
                 }) {
-                    Text("Sign In")
+                    Text("Sign Out Locally")
                 }
+                
+                
             }
-            Button(action: {
-                sink = signIn(username: username, password: password)
-                sink = confirmSignIn()
-            }) {
-                Text("Confirm Sign In")
-            }
-            Button(action: {
-                sink = signOutLocally()
-            }) {
-                Text("Sign Out Locally")
-            }
-            
-            
-            
         }
         .padding()
         .onAppear()
@@ -222,7 +242,7 @@ struct ContentView: View {
     
     func confirmSignIn() -> AnyCancellable {
         Amplify.Publisher.create {
-            try await Amplify.Auth.confirmSignIn(challengeResponse: "<confirmation code received via SMS>")
+            try await Amplify.Auth.confirmSignIn(challengeResponse: MFA)
         }.sink {
             if case let .failure(authError) = $0 {
                 print("Confirm sign in failed \(authError)")
