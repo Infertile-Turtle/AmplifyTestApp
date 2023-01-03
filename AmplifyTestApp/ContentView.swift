@@ -75,12 +75,7 @@ struct ContentView: View {
 //                }) {
 //                    Text("Confirm Sign Up")
 //                }
-//                Button(action: {
-//                    sink = signIn(username: username, password: password)
-//
-//                }) {
-//                    Text("Sign In Only")
-//                }
+                
                 Button(action: {
                     sink = confirmSignUp(for: username, with: verification)
                     sink = signIn(username: username, password: password)
@@ -113,8 +108,12 @@ struct ContentView: View {
                 }) {
                     Text("Sign Out Locally")
                 }
-                
-                
+                Button(action: {
+                    sink = signIn(username: username, password: password)
+
+                }) {
+                    Text("Sign In Only")
+                }
             }
         }
         .padding()
